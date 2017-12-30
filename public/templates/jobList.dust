@@ -5,14 +5,19 @@ Matador
 {/title}
 
 {<body}
-<h1 class="page-header">{type} <span class="btn-group">
+<h1 class="page-header form-inline">{type} <span class="btn-group"/>
     <span>
         <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-cog"></i> <span class="caret"></span></button>
         <ul class="dropdown-menu">
             <li><a href="#" onclick="redisHandler.fn.deleteByStatus('{type}');">Delete all {type} jobs</a></li>
-            {@if cond="'{type}'!='Pending'"}<li><a href="#" onclick="redisHandler.fn.pendingByStatus('{type}');">Revert all {type} jobs to Pending</a></li>{/if}
+            {@eq key=type value="Pending" type="string"}
+            {:else}
+              <li><a href="#" onclick="redisHandler.fn.pendingByStatus('{type}');">Revert all {type} jobs to Pending</a></li>
+            {/eq}
         </ul>
     </span>
+    <select style="margin-left: 10px" class="form-control" data-bind="value: pageSize, options: paginationOptions"></select>
+    <input type="text" placeholder="Filter by type" class="form-control" style="margin-left: 10px" data-bind="textInput: typeFilter"></input>
 </h1>
 <div class="table-responsive" data-bind="visible: keys().length > 0">
     <div id="jobData"></div>
@@ -22,18 +27,18 @@ Matador
             <th>Id</th>
             <th>Type</th>
             <th>Status</th>
-            <th data-bind="visible: keys().length > 0 && keys()[0].progress != undefined">Progress</th>
-            <th data-bind="visible: keys().length > 0 && keys()[0].delayUntil != undefined">Delay until</th>
+            <th data-bind="visible: itemsOnCurrentPage().length > 0 && itemsOnCurrentPage()[0].progress != undefined">Progress</th>
+            <th data-bind="visible: itemsOnCurrentPage().length > 0 && itemsOnCurrentPage()[0].delayUntil != undefined">Delay until</th>
             <th>Manage</th>
         </tr>
         </thead>
-        <tbody data-bind="foreach: keys">
+        <tbody data-bind="foreach: itemsOnCurrentPage">
         <tr>
             <td data-bind="text: id"></td>
             <td data-bind="text: type"></td>
             <td data-bind="text: status"></td>
-            <td data-bind="visible: keys.length > 0 && keys[0].progress != undefined, text: keys[0].progress != undefined ? progress : ''"></td>
-            <td data-bind="visible: keys.length > 0 && keys[0].delayUntil != undefined, text: keys[0].delayUntil != undefined ? delayUntil : ''"></td>
+            <td data-bind="visible: $data.progress != undefined, text: ($data.progress != undefined) ? progress : ''"></td>
+            <td data-bind="visible: $data.delayUntil != undefined, text: ($data.delayUntil != undefined) ? delayUntil : ''"></td>
             <td>
                 <button class="btn btn-default" data-bind="click: redisHandler.fn.deleteById" title="Delete">
                     <i class="fa fa-trash-o"></i>
@@ -48,5 +53,10 @@ Matador
         </tr>
         </tbody>
     </table>
+    <span data-bind="visible: itemsOnCurrentPage().length > 0">Page: </span>
+    <!-- ko foreach: ko.utils.range(0, maxPageIndex) -->
+    <a href="#" data-bind="css: {current: ($data === $root.currentPageIndex())}, click: $root.currentPageIndex, text: $data + 1"></a>
+    <span data-bind="text: ($data === $root.maxPageIndex()) ? '' : ', '"></span>
+    <!-- /ko -->
 </div>
 {/body}

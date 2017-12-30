@@ -7,7 +7,7 @@ Matador
 {<body}
 <h1 class="page-header">{type} <span class="btn-group">
 </h1>
-<div class="table-responsive" data-bind="visible: keys().length > 0">
+<div class="table-responsive" data-bind="visible: filteredKeys().length > 0">
     <div id="jobData"></div>
     <table class="table table-striped">
         <thead>
@@ -22,7 +22,7 @@ Matador
             <th>Options</th>
         </tr>
         </thead>
-        <tbody data-bind="foreach: keys">
+        <tbody data-bind="foreach: filteredKeys">
         <tr>
             <td data-bind="text: name"></td>
             <td data-bind="text: pending"></td>
@@ -34,7 +34,7 @@ Matador
             <td>
               <div class="dropdown">
                 <button data-toggle="dropdown" data-bind="attr: { id: 'queue_dropdown_' + $index() }" class="btn btn-default dropdown-toggle">
-                  <i class="fa fa-cog"></i> 
+                  <i class="fa fa-cog"></i>
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right" data-bind="attr: { "aria-labelledby": 'queue_dropdown_' + $index() }">

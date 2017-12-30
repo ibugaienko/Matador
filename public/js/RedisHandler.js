@@ -32,7 +32,7 @@ var RedisHandler = function(){
             });
         },
         deleteByStatus: function(status, obj){
-            var queueName = obj.name;
+            var queueName = (obj) ? obj.name : undefined;
             status = status.toLowerCase();
             var statusDisplay = status;
             if(status === "pending"){

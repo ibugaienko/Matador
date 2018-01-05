@@ -8,7 +8,9 @@ var DataModel = function(){
     _self.pending = ko.observable(null);
     _self.delayed = ko.observable(null);
     _self.stuck = ko.observable(null);
-    _self.queues = ko.observable(null);
+    _self.queues = ko.observableArray([]);
+    _self.selectedQueue = ko.observable("");
+    _self.queueNames = ko.observableArray([]);
     _self.keys = ko.observableArray([]);
     _self.memory = ko.observable({});
     _self.peakMemory = ko.observable("");
@@ -21,13 +23,22 @@ var DataModel = function(){
 
             var refresh = function(){
                 $.getJSON(refreshUrl).done(function(data){
-                    _self.complete(" ("+data.counts.complete+")");
-                    _self.failed(" ("+data.counts.failed+")");
-                    _self.active(" ("+data.counts.active+")");
-                    _self.pending(" ("+data.counts.pending+")");
-                    _self.delayed(" ("+data.counts.delayed+")");
-                    _self.stuck(" ("+data.counts.stuck+")");
                     _self.keys(data.keys);
+                    if (data.queues) {
+                      _self.queues(data.queues);
+                      _self.queueNames(data.queues.map(function(q) { return q.name; }));
+                      if (_self.selectedQueue()) {
+                        var queue = data.queues.filter(
+                          function (q){ return _self.selectedQueue() === q.name }
+                        )[0];
+                        _self.complete(" ("+queue.completed+")");
+                        _self.failed(" ("+queue.failed+")");
+                        _self.active(" ("+queue.active+")");
+                        _self.pending(" ("+queue.pending+")");
+                        _self.delayed(" ("+queue.delayed+")");
+                      }
+                    }
+                    _self.stuck(" ("+data.counts.stuck+")");
                     if(data.memory){
                         _self.memory(data.memory.usage);
                         _self.peakMemory(data.memory.peak.human);

@@ -44,18 +44,21 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Matador</a>
+            <a class="navbar-brand" href="#">Matador{?selectedQueue}: {selectedQueue}{/selectedQueue}</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li {?overview}class="active"{/overview}><a href="{basepath}/">Overview<span data-bind="visible: stuck() != null && stuck() !== ' (0)', text: stuck" style="color: red"></span></a></li>
-                <li {?complete}class="active"{/complete}><a href="{basepath}/complete">Complete<span data-bind="visible: complete() != null, text: complete"></span></a></li>
-                <li {?failed}class="active"{/failed}><a href="{basepath}/failed">Failed<span data-bind="visible: failed() != null, text: failed"></span></a></li>
-                <li {?active}class="active"{/active}><a href="{basepath}/active">Active<span data-bind="visible: active() != null, text: active"></span></a></li>
-                <li {?pending}class="active"{/pending}><a href="{basepath}/pending">Pending<span data-bind="visible: pending() != null, text: pending"></span></a></li>
-                <li {?delayed}class="active"{/delayed}><a href="{basepath}/delayed">Delayed<span data-bind="visible: delayed() != null, text: delayed"></span></a></li>
-                <li {?queues}class="active"{/queues}><a href="{basepath}/pending">Queues<span data-bind="visible: queues() != null, text: queues"></span></a></li>
-                <li {?newjob}class="active"{/newjob}><a href="{basepath}/newjob">New Job</a></li>
+                {?selectedQueue}
+                {:else}
+                <li style="padding-left: 5%; padding-right: 5%; padding-bottom: 2px;"><select class="form-control" data-bind="value: selectedQueue, options: queueNames"></select></li>
+                {/selectedQueue}
+                <li {?overview}class="active"{/overview}><a href="{basepath}/">{?selectedQueue}Back to Overview{:else}Overview{/selectedQueue}<span data-bind="visible: stuck() != null && stuck() !== ' (0)', text: stuck" style="color: red"></span></a></li>
+                <li {?complete}class="active"{/complete} data-bind="visible: selectedQueue()"><a href="{basepath}/complete">Complete<span data-bind="visible: complete() != null, text: complete"></span></a></li>
+                <li {?failed}class="active"{/failed} data-bind="visible: selectedQueue()"><a href="{basepath}/failed">Failed<span data-bind="visible: failed() != null, text: failed"></span></a></li>
+                <li {?active}class="active"{/active} data-bind="visible: selectedQueue()"><a href="{basepath}/active">Active<span data-bind="visible: active() != null, text: active"></span></a></li>
+                <li {?pending}class="active"{/pending} data-bind="visible: selectedQueue()"><a href="{basepath}/pending">Pending<span data-bind="visible: pending() != null, text: pending"></span></a></li>
+                <li {?delayed}class="active"{/delayed} data-bind="visible: selectedQueue()"><a href="{basepath}/delayed">Delayed<span data-bind="visible: delayed() != null, text: delayed"></span></a></li>
+                <li {?newjob}class="active"{/newjob} data-bind="visible: selectedQueue()"><a href="{basepath}/newjob" data-bind="attr: {href: basepath + '/' + selectedQueue() + '/newjob'}">New Job</a></li>
             </ul>
         </div>
     </div>
@@ -66,14 +69,17 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <li><h3>Matador</h3></li>
-                <li {?overview}class="active"{/overview}><a href="{basepath}/">Overview<span data-bind="visible: stuck() != null && stuck() !== ' (0)', text: stuck" style="color: red"></span></a></li>
-                <li {?complete}class="active"{/complete}><a href="{basepath}/complete">Complete<span data-bind="visible: complete() != null, text: complete"></span></a></li>
-                <li {?failed}class="active"{/failed}><a href="{basepath}/failed">Failed<span data-bind="visible: failed() != null, text: failed"></span></a></li>
-                <li {?active}class="active"{/active}><a href="{basepath}/active">Active<span data-bind="visible: active() != null, text: active"></span></a></li>
-                <li {?pending}class="active"{/pending}><a href="{basepath}/pending">Pending<span data-bind="visible: pending() != null, text: pending"></span></a></li>
-                <li {?delayed}class="active"{/delayed}><a href="{basepath}/delayed">Delayed<span data-bind="visible: delayed() != null, text: delayed"></span></a></li>
-                <li {?queues}class="active"{/queues}><a href="{basepath}/queues">Queues<span data-bind="visible: queues() != null, text: queues"></span></a></li>
-                <li {?newjob}class="active"{/newjob}><a href="{basepath}/newjob">New Job</a></li>
+                {?selectedQueue}
+                {:else}
+                <li style="padding-left: 20px; padding-right: 20px; padding-bottom: 12px;"><select class="form-control" data-bind="value: selectedQueue, options: queueNames"></select></li>
+                {/selectedQueue}
+                <li {?overview}class="active"{/overview}><a href="{basepath}/">{?selectedQueue}Back to Overview{:else}Overview{/selectedQueue}<span data-bind="visible: stuck() != null && stuck() !== ' (0)', text: stuck" style="color: red"></span></a></li>
+                <li {?complete}class="active"{/complete} data-bind="visible: selectedQueue()"><a href="{basepath}/complete" data-bind="attr: {href: basepath + '/' + selectedQueue() + '/complete'}">Complete<span data-bind="visible: complete() != null, text: complete"></span></a></li>
+                <li {?failed}class="active"{/failed} data-bind="visible: selectedQueue()"><a href="{basepath}/failed" data-bind="attr: {href: basepath + '/' + selectedQueue() + '/failed'}">Failed<span data-bind="visible: failed() != null, text: failed"></span></a></li>
+                <li {?active}class="active"{/active} data-bind="visible: selectedQueue()"><a href="{basepath}/active" data-bind="attr: {href: basepath + '/' + selectedQueue() + '/active'}">Active<span data-bind="visible: active() != null, text: active"></span></a></li>
+                <li {?pending}class="active"{/pending} data-bind="visible: selectedQueue()"><a href="{basepath}/pending" data-bind="attr: {href: basepath + '/' + selectedQueue() + '/pending'}">Pending<span data-bind="visible: pending() != null, text: pending"></span></a></li>
+                <li {?delayed}class="active"{/delayed} data-bind="visible: selectedQueue()"><a href="{basepath}/delayed" data-bind="attr: {href: basepath + '/' + selectedQueue() + '/delayed'}">Delayed<span data-bind="visible: delayed() != null, text: delayed"></span></a></li>
+                <li {?newjob}class="active"{/newjob} data-bind="visible: selectedQueue()"><a href="{basepath}/newjob" data-bind="attr: {href: basepath + '/' + selectedQueue() + '/newjob'}">New Job</a></li>
             </ul>
         </div>
 
@@ -85,9 +91,14 @@
 
 <script type="text/javascript">
     var keys = [];
+    var queueNames = [];
     {#keys}
     keys.push({id: "{id}", type: "{type}", status: "{status}"{?progress}, progress: "{progress}"{/progress}{?delayUntil}, delayUntil: "{delayUntil}"{/delayUntil}});
     {/keys}
+
+    {#queues}
+    queueNames.push("{.name}");
+    {/queues}
 
     $(document).on('ready', function(){
         {?counts}
@@ -96,15 +107,8 @@
         dataModel.fn.refreshViewModel({
             basepath: '{basepath}'
         });
-
-        dataModel.keys(keys);
-
-        dataModel.complete(" ({counts.complete})");
-        dataModel.failed(" ({counts.failed})");
-        dataModel.active(" ({counts.active})");
-        dataModel.pending(" ({counts.pending})");
-        dataModel.delayed(" ({counts.delayed})");
-        dataModel.stuck(" ({counts.stuck})");
+        dataModel.queueNames(queueNames);
+        {?selectedQueue}dataModel.selectedQueue("{selectedQueue}");{/selectedQueue}
         {/counts}
     });
 </script>

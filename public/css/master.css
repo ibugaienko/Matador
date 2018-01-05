@@ -80,6 +80,9 @@ body {
   background-color: #428bca;
 }
 
+.nav-sidebar > .active > a:hover {
+  color: #014c8c;
+}
 
 /*
  * Main content

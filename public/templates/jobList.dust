@@ -5,7 +5,7 @@ Matador
 {/title}
 
 {<body}
-<h1 class="page-header">{type} <span class="btn-group">
+<h1 class="page-header">Queue: `{selectedQueue}` &mdash; {type} <span class="btn-group">
     <span>
         <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-cog"></i> <span class="caret"></span></button>
         <ul class="dropdown-menu">

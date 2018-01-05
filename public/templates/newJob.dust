@@ -11,7 +11,7 @@ Matador
       <div class="form-group">
         <label for="queue">Queue:</label>
         <br>
-        <input name="queue" id="queue" class="form-control"></input>
+        <input name="queue" value="{selectedQueue}" id="queue" class="form-control"></input>
         <br>
         <label for="payload">Payload:</label>
         <br>
